@@ -1,0 +1,19 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+a {
+  text-decoration: none;
+}
+
+.blog--image {
+  width: 30%;
+}
+
+.form--login,
+.form--register {
+  max-width: 400px;
+  margin: 0 auto;
+}
