@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
+import { Navigate } from 'react-router-dom'
 
 const modules = {
   toolbar: [
@@ -32,50 +33,61 @@ const formats = [
 ]
 
 export default function CreatePost() {
-  const [formData, setFormData] = useState({
-    title: '',
-    summary: '',
-    content: '',
-  })
+  const [title, setTitle] = useState('')
+  const [summary, setSummary] = useState('')
+  const [content, setContent] = useState('')
+  const [files, setFiles] = useState('')
+  const [redirect, setRedirect] = useState(false)
 
-  function handleChange(e) {
-    // console.log(e.target)
-    setFormData(prevFormData => {
-      // const {name, value} = e.target
-      return { ...prevFormData, [e.target.name]: e.target.value }
+  async function createNewPost(ev) {
+    ev.preventDefault()
+    const data = new FormData()
+    data.set('title', title)
+    data.set('summary', summary)
+    data.set('content', content)
+    data.set('file', files[0])
+
+    const response = await fetch('http://localhost:3001/create', {
+      method: 'POST',
+      body: data,
     })
+    if (response.ok) {
+      setRedirect(true)
+    }
   }
 
-  console.log(formData.title)
+  if (redirect) {
+    return <Navigate to={'/'} />
+  }
 
   return (
-    <form className='w3-margin'>
+    <form className='w3-margin' onSubmit={createNewPost}>
       <input
         type='text'
         placeholder='Title'
         className='w3-input w3-border w3-margin w3-round'
         name='title'
-        value={formData.title}
-        onChange={handleChange}
+        value={title}
+        onChange={e => setTitle(e.target.value)}
       />
       <input
         type='text'
         name='summary'
-        value={formData.summary}
-        onChange={handleChange}
+        value={summary}
+        onChange={e => setSummary(e.target.value)}
         placeholder='Summary'
         className='w3-input w3-border w3-margin w3-round'
       />
       <input
         type='file'
-        name=''
-        id=''
         className='w3-input w3-margin w3-round'
+        onChange={e => setFiles(e.target.files)}
       />
       <ReactQuill
-        value={formData.content}
+        value={content}
         modules={modules}
         formats={formats}
+        onChange={newValue => setContent(newValue)}
       />
       <button className='w3-button w3-margin-top w3-block w3-dark-grey w3-round'>
         Create post

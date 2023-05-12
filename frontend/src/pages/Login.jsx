@@ -18,11 +18,12 @@ export default function Login() {
       credentials: 'include',
     })
     if (response.ok) {
-      response.json().then(retrieverdUserInfo => {
-        setUserInfo(retrieverdUserInfo)
+      response.json().then(userInfo => {
+        setUserInfo(userInfo)
       })
       setRedirect(true)
-    } else {
+    }
+    if (!response.ok) {
       alert('Access denied')
     }
   }

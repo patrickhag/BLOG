@@ -4,4 +4,8 @@ Content-Type: application/json
 {
     "username": "test",
     "password": "test"
-}   
+}
+
+### 
+
+GET http://localhost:3001/post

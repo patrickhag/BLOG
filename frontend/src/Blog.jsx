@@ -1,27 +1,30 @@
 import React from 'react'
+import { format } from 'date-fns'
 
-export default function Blogs() {
+export default function Blogs({ title, summary, cover, content, createdAt }) {
   return (
     <div
       className='w3-row w3-display-container w3-padding-top'
       style={{ marginTop: '70px' }}
     >
-      <img src='/wedding_location.jpg' alt='' className='blog--image' />
+      <img
+        src='https://techcrunch.com/wp-content/uploads/2021/11/GettyImages-1236309559.jpg?w=1390&crop=1'
+        alt=''
+        className='blog--image'
+      />
       <div
         className='w3-display-right w3-padding w3-twothird'
         style={{ marginLeft: '30%' }}
       >
-        <h3>Full-house battery backup coming later this year</h3>
+        <h3>{title}</h3>
         <span>
-          <b> Patrick hag</b>
+          <b> Patrick hag </b>
         </span>
         &nbsp; &nbsp;
-        <span className='w3-wide w3-small w3-opacity'>2023-02-03</span>
-        <p>
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dignissimos
-          natus harum, odio dolor vitae expedita cumque! Illo iure eveniet
-          illum, ipsum rem error laudantium neque!
-        </p>
+        <span className='w3-small w3-opacity'>
+          {format(new Date(createdAt), 'MMM d, yyyy HH:mm')}
+        </span>
+        <p>{summary}</p>
       </div>
     </div>
   )

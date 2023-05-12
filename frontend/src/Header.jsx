@@ -28,7 +28,7 @@ export default function Header() {
       <header className='w3-medium w3-right'>
         {username && (
           <>
-            <Link to='/create_new_post' className='w3-bar-item'>
+            <Link to='/create-new-post' className='w3-bar-item'>
               Create new post
             </Link>
             <a onClick={logout} className='w3-bar-item'>

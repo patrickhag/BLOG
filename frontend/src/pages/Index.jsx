@@ -1,10 +1,14 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Blogs from '../Blog'
 
 export default function Index() {
-  return (
-    <>
-      <Blogs />
-    </>
-  )
+  const [allPosts, setAllPosts] = useState([])
+
+  useEffect(() => {
+    fetch('http://localhost:3001/post')
+      .then(res => res.json())
+      .then(data => setAllPosts(data))
+  }, [])
+
+  return <>{allPosts.length > 0 && allPosts.map(post => <Blogs {...post} />)}</>
 }

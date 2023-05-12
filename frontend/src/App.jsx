@@ -16,7 +16,7 @@ export default function App() {
             <Route path='/' index element={<Index />}></Route>
             <Route path='/login' element={<Login />}></Route>
             <Route path='/register' element={<Register />}></Route>
-            <Route path='/create_new_post' element={<CreatePost />}></Route>
+            <Route path='/create-new-post' element={<CreatePost />}></Route>
           </Route>
         </Routes>
       </UserContextProvider>
