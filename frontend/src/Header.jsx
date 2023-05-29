@@ -8,21 +8,25 @@ export default function Header() {
   const { userInfo, setUserInfo } = useContext(userContext)
 
   useEffect(() => {
-    fetch('http://localhost:3001/profile', {
-      credentials: 'include',
-    })
-      .then(res => res.json())
-      .then(data => setUserInfo(data.username))
-  }, [])
+    if (userInfo?.username) {
+      fetch('http://localhost:3001/profile', {
+        credentials: 'include',
+      })
+        .then(res => res.json())
+        .then(data => setUserInfo(data))
+    }
+  }, [userInfo?.username])
 
   function logout() {
-    fetch('http://localhost:3001/login', {
+    fetch('http://localhost:3001/logout', {
       credentials: 'include',
       method: 'POST',
     })
     setUserInfo(null)
   }
-  const username = userInfo
+
+  const username = userInfo?.username
+
   return (
     <div className='w3-bar'>
       <header className='w3-medium w3-right'>
@@ -31,9 +35,9 @@ export default function Header() {
             <Link to='/create-new-post' className='w3-bar-item'>
               Create new post
             </Link>
-            <a onClick={logout} className='w3-bar-item'>
-              Logout
-            </a>
+            <Link onClick={logout} className='w3-bar-item'>
+              Logout ({username})
+            </Link>
           </>
         )}
         {!username && (
@@ -47,7 +51,7 @@ export default function Header() {
           </>
         )}
       </header>
-      <a href='#' className='w3-xlarge'>
+      <a href='/' className='w3-xlarge'>
         Tix's blog
       </a>
     </div>

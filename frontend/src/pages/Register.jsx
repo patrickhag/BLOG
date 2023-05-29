@@ -7,7 +7,6 @@ export default function Login() {
   const [password, setPassword] = useState('')
 
   async function handleSubmit(e) {
-    console.log(123)
     e.preventDefault()
     const res = await fetch('http://localhost:3001/register', {
       method: 'POST',
@@ -15,6 +14,7 @@ export default function Login() {
       body: JSON.stringify({ username, password }),
     })
     if (res.status === 200) {
+      alert('Registered successfully')
       navigateTo('/login')
     } else {
       alert('Access denied')

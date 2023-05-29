@@ -1,42 +1,53 @@
-import React, { useState } from 'react'
-import ReactQuill from 'react-quill'
-import 'react-quill/dist/quill.snow.css'
-import { Navigate } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
 import Editor from '../Editor'
+import { useNavigate, useParams } from 'react-router-dom'
 
-export default function CreatePost() {
+export default function EditPost() {
+  const { id } = useParams()
   const [title, setTitle] = useState('')
   const [summary, setSummary] = useState('')
-  const [content, setContent] = useState('')
   const [files, setFiles] = useState('')
+  const [content, setContent] = useState('')
   const [redirect, setRedirect] = useState(false)
 
-  async function createNewPost(ev) {
-    ev.preventDefault()
+  const navigateTo = useNavigate()
+
+  useEffect(() => {
+    fetch(`http://localhost:3001/post/${id}`).then(res => {
+      res.json().then(postInfo => {
+        setTitle(postInfo.title)
+        setContent(postInfo.content)
+        setSummary(postInfo.summary)
+      })
+    })
+  }, [])
+
+  async function updatePost(e) {
+    e.preventDefault()
     const data = new FormData()
     data.set('title', title)
     data.set('summary', summary)
     data.set('content', content)
-    data.set('file', files[0])
-
-    const response = await fetch('http://localhost:3001/create', {
-      method: 'POST',
+    data.set('id', id)
+    if (files?.[0]) {
+      data.set('file', files?.[0])
+    }
+    const response = await fetch(`http://localhost:3001/post/${id}`, {
+      method: 'PUT',
       body: data,
       credentials: 'include',
     })
     if (response.ok) {
       setRedirect(true)
-    } else {
-      alert('Please login in order to create new post')
     }
   }
 
   if (redirect) {
-    return <Navigate to={'/'} />
+    navigateTo('/post/' + id)
   }
-  const widthStyle = { width: 505.6 }
+
   return (
-    <form className='w3-margin' onSubmit={createNewPost}>
+    <form className='w3-margin' onSubmit={updatePost}>
       <input
         type='text'
         placeholder='Title'
@@ -61,7 +72,7 @@ export default function CreatePost() {
       <Editor value={content} onChange={setContent} />
 
       <button className='w3-button w3-margin-top w3-block w3-dark-grey w3-round'>
-        Create post
+        Update post
       </button>
     </form>
   )

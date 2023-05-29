@@ -6,6 +6,8 @@ import Login from './pages/Login'
 import Register from './pages/Register'
 import { UserContextProvider } from './UserContext'
 import CreatePost from './pages/CreatePost'
+import Post from './pages/Post'
+import EditPost from './pages/EditPost'
 
 export default function App() {
   return (
@@ -17,6 +19,8 @@ export default function App() {
             <Route path='/login' element={<Login />}></Route>
             <Route path='/register' element={<Register />}></Route>
             <Route path='/create-new-post' element={<CreatePost />}></Route>
+            <Route path='/post/:id' element={<Post />}></Route>
+            <Route path='/edit-post/:id' element={<EditPost />}></Route>
           </Route>
         </Routes>
       </UserContextProvider>
